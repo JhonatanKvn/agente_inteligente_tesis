@@ -1,0 +1,28 @@
+name: Despliegue Automatico GitOps Azure
+
+on:
+  push:
+    branches:
+      - main  # Se activa automáticamente al hacer push a main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Descargar el código del repositorio
+    - name: Checkout GitHub Action
+      uses: actions/checkout@v4
+
+    # 2. Iniciar sesión en Azure usando el Secreto de GitHub
+    - name: Login to Azure
+      uses: azure/login@v2
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    # 3. Desplegar el código en tu recurso existente
+    - name: 'Deploy to Azure Web App'
+      uses: azure/webapps-deploy@v3
+      with:
+        app-name: 'agente-ia-jhonatan123'
+        package: '.'
